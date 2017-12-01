@@ -11,20 +11,28 @@ import compilers.Token;
 
 
 public class scanner {
-    
+
+    public scanner() {}
+
     public static void main(String[] args) throws IOException 
     {
         
         LinkedList <Token> lineTokens =new LinkedList<>() ;
         File in=new File("tiny_sample_code.txt");
-        FileWriter out=new FileWriter("scanner_output.txt");  ;
+        FileWriter out=new FileWriter("scanner_output.txt");
         Scanner s=new Scanner(in);
+        int i=0;
 
         while(s.hasNext())
         {
             String line=s.nextLine();
-            System.out.println(line);
+//            System.out.println(line);
             lineTokens=ScannerC(line);
+            if (i==0)
+            {
+                lineTokens.removeFirst();
+                i++;
+            }
             for (Token t : lineTokens) 
                 out.write(t.getTokenValue()+" : "+t.getTokenType()+"\r\n");
             out.write("\r\n");
@@ -32,7 +40,7 @@ public class scanner {
         out.close();
     }
          
-    public static LinkedList<Token> ScannerC(String input)
+    private static LinkedList<Token> ScannerC(String input)
     {
         LinkedList<Token> tokenList=new LinkedList<>();
         int i=0;
@@ -92,35 +100,35 @@ public class scanner {
                 {
                     String t=token.getTokenValue();
                     if(isReservedWord(t))
-                        token.setTokenType("reserved word");
+                        token.setTokenType("reservedWord");
                     else if(isNumber(t))
                         token.setTokenType("number");
                     else if(isSpecialSymbol(t))
-                        token.setTokenType("special symbol");
-                    
-                    else
+                        token.setTokenType("specialSymbol");     
+                    else if(!t.equals(""))
                         token.setTokenType("identifier");
-                    if(!(token.getTokenValue().equals("\n")) && !(token.getTokenValue().equals("")) )
+                    if(!(t.equals("\n")) && !(t.equals("")) )
                         tokenList.add(token);
+                    
                 }
         }
        
-        for (Token t : tokenList) 
-                System.out.println(t.getTokenValue()+" : "+t.getTokenType()+"\n");
+//        for (Token t : tokenList) 
+//                System.out.println(t.getTokenValue()+":"+t.getTokenType()+"\n");
          return tokenList;
     }
     
-    public static boolean isReservedWord(String s)
+    private static boolean isReservedWord(String s)
     {
         return(s.equals("if") || s.equals("then") || s.equals("else") || s.equals("end") || s.equals("repeat") || s.equals("until") || s.equals("read") || s.equals("write") );
     }
-    public static boolean isNumber(String s)
+    private static boolean isNumber(String s)
     {
         if(s.length()>0)
             return(Character.isDigit(s.charAt(0)) );
         return false;
     }
-    public static boolean isSpecialSymbol(String s)
+    private static boolean isSpecialSymbol(String s)
     {
         return(s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/") || s.equals("=") || s.equals("<") || s.equals("(") || s.equals(")") || s.equals(";") ||s.equals(":=") );
  

@@ -29,6 +29,12 @@ public class Token {
     public void setTokenValue(String tokenValue) {
         this.tokenValue = tokenValue;
     }
+    
+    public void setParameters(String tokenValue, String tokenType)
+    {
+        this.tokenValue=tokenValue;
+        this.tokenType=tokenType;
+    }
     public void updateTokenValue(char c)
     {
         this.tokenValue+=c;
